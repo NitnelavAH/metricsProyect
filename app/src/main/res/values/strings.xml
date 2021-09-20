@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MÉTRICAS DE HALSTEAD</string>
+    <string name="btn_file_chooser">Seleccionar Archivo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
