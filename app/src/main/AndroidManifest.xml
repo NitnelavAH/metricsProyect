@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MÉTRICASDEHALSTEAD">
         <activity android:name=".Metrics"></activity>
-        <activity android:name=".FileChooser" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

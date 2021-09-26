@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:text="@string/btn_file_chooser"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="294dp"/>
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="60dp" />
 
     <TextView
         android:id="@+id/path_file"
@@ -22,5 +24,18 @@
         android:layout_marginTop="40dp"
         android:text="File Path"
         app:layout_constraintTop_toBottomOf="@+id/choose_file_btn"
-        tools:layout_editor_absoluteX="176dp" />
+        tools:layout_editor_absoluteX="176dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/code_view"
+        android:layout_width="373dp"
+        android:layout_height="421dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/path_file" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

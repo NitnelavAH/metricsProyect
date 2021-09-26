@@ -2,6 +2,7 @@ package com.nitnelav.metricas.halstead;
 
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 public class Scanner {
@@ -304,5 +305,36 @@ public class Scanner {
         return variablesVector;
     }
 
+    @Override
+    public String toString() {
+        return "Scanner{" +
+                "tokens=" + tokens +
+                ", variablesVector=" + variablesVector +
+                ", numbersVector=" + numbersVector +
+                ", numbers='" + numbers + '\'' +
+                ", alphabet='" + alphabet + '\'' +
+                ", operators='" + operators + '\'' +
+                ", space='" + space + '\'' +
+                ", specialCharacters='" + specialCharacters + '\'' +
+                ", ifAmount=" + ifAmount +
+                ", parenthesisAmount=" + parenthesisAmount +
+                ", addAmount=" + addAmount +
+                ", subAmount=" + subAmount +
+                ", divAmount=" + divAmount +
+                ", mulAmount=" + mulAmount +
+                ", equalAmount=" + equalAmount +
+                ", moreAmount=" + moreAmount +
+                ", lessAmount=" + lessAmount +
+                ", comaAmount=" + comaAmount +
+                ", percentAmount=" + percentAmount +
+                ", doublePointAmount=" + doublePointAmount +
+                ", ignore=" + Arrays.toString(ignore) +
+                ", parenthesisCase=" + Arrays.toString(parenthesisCase) +
+                ", operatorsCase=" + Arrays.toString(operatorsCase) +
+                ", variableCase=" + Arrays.toString(variableCase) +
+                ", numbersCase=" + Arrays.toString(numbersCase) +
+                ", ifCase=" + Arrays.toString(ifCase) +
+                '}';
+    }
 }
 
