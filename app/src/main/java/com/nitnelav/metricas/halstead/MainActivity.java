@@ -13,16 +13,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.Hashtable;
 import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private final int CHOOSE_FILE_FROM_DEVICE = 1001;
-    private static final String TAG = "MainActivity";
+    private final String TAG = "MainActivity";
 
     private Button chooseFile_btn;
     private TextView path_file;
@@ -62,12 +65,11 @@ public class MainActivity extends AppCompatActivity {
                 path_file.setText("File Path:" + resultData.getData() );
                 try {
                     String code = readTextFromUri(resultData.getData());
+                    String resuslt = getTokens(resultData.getData());
                     Log.d(TAG, "onActivityResult: "+ code);
-                    code_view.setText(code);
-                    Scanner scan = new Scanner();
-                    String a = scan.startScanner(code_view.getText().toString());
-                    Log.d(TAG, "onActivityResult: "+ a);
-                    Log.d(TAG, "onActivityResult: "+ scan.toString());
+                    code_view.setText(code + "\n" + resuslt);
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -77,20 +79,75 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String readTextFromUri(Uri uri) throws IOException {
+
         StringBuilder stringBuilder = new StringBuilder();
-        try (InputStream inputStream =
-                     getContentResolver().openInputStream(uri);
-             BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(Objects.requireNonNull(inputStream)))) {
+        try (InputStream inputStream = getContentResolver().openInputStream(uri);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))
+
+        ) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if(line.length()>0 && !line.startsWith("#")){
                     stringBuilder.append(line + "\n");
                     Log.d(TAG, "onActivityResult: "+ line);
                 }
+
             }
         }
         return stringBuilder.toString();
+    }
+
+    private String getTokens(Uri uri) {
+        int operadores = 0;
+        int operandos = 0;
+        int errors = 0;
+        String resultado = "\n ----RESULTADOS---- \n";
+        try (InputStream inputStream = getContentResolver().openInputStream(uri);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))
+        ) {
+            LexerAnalizer lexer = new LexerAnalizer(reader, true);
+            PyTokens token;
+            while ((token = lexer.yylex()) != null) {
+                Log.d(TAG, "onActivityResult: " + lexer.yylex());
+                Log.d(TAG, "onActivityResult: " + lexer.yytext());
+            }
+            System.out.println();
+            String result = lexer.getReviewString();
+            resultado += result;
+            lexer.printReview();
+
+
+            /*while(true){
+                Tokens tokens = lexer.yylex();
+                Log.d(TAG, "onActivityResult: " + lexer.lexeme);
+                if (tokens == null) {
+                    resultado += "No. Operadores: " + operadores + "\n" + "No. Operandos: " + operandos + "\n" + "No. Errores: " + errors + "\n";
+                    break;
+                }
+                switch (tokens) {
+                    case Operador:
+                        operadores += 1;
+                        resultado += lexer.lexeme + ":Es un " + tokens + "\n";
+                        break;
+                    case Operando:
+                        operandos += 1;
+                        resultado += lexer.lexeme + ":Es un " + tokens + "\n";
+                        break;
+                    case ERROR:
+                        errors += 1;
+                        resultado += lexer.lexeme + ":Es un " + tokens + "\n";
+                    default:
+                        resultado += "Token: " + tokens + '\n';
+                        break;
+                }
+            }*/
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
     }
 }
 

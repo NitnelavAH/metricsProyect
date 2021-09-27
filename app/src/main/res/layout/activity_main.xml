@@ -29,8 +29,8 @@
 
     <EditText
         android:id="@+id/code_view"
-        android:layout_width="373dp"
-        android:layout_height="421dp"
+        android:layout_width="316dp"
+        android:layout_height="347dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
