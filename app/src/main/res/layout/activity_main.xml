@@ -23,8 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="File Path"
+        android:clickable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/choose_file_btn"
-        tools:layout_editor_absoluteX="176dp"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -33,7 +35,7 @@
         android:layout_height="347dp"
         android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine"
+        android:inputType="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/path_file" />

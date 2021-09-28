@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         chooseFile_btn = findViewById(R.id.choose_file_btn);
         path_file = findViewById(R.id.path_file);
         code_view = (EditText) findViewById(R.id.code_view);
+
 
         chooseFile_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -107,15 +111,48 @@ public class MainActivity extends AppCompatActivity {
         ) {
             LexerAnalizer lexer = new LexerAnalizer(reader, true);
             PyTokens token;
+            ArrayList<String> myTokens = new ArrayList<String>();
             while ((token = lexer.yylex()) != null) {
                 Log.d(TAG, "onActivityResult: " + lexer.yylex());
                 Log.d(TAG, "onActivityResult: " + lexer.yytext());
+                myTokens.add(lexer.yytext());
+                switch (token){
+                    case KEYWORD:
+                    case OPERATOR:
+                        operadores +=1;
+                        resultado += lexer.yytext() + " --> Operador \n";
+                        break;
+                    case LITERAL:
+                    case IDENTIFIER:
+                        operandos +=1;
+                        resultado += lexer.yytext() + " --> Operando \n";
+                        break;
+                    default:
+                }
             }
-            System.out.println();
             String result = lexer.getReviewString();
-            resultado += result;
+            //resultado += result;
+            resultado += "\nNo. Operadores: "+ operadores+"\nNo.Operandos: "+operandos;
             lexer.printReview();
 
+
+            Map<String, Integer> tokenCount = new HashMap<>();
+
+            for (String myToken : myTokens) {
+                String[] tokens = myToken.split(" ");
+                for (String item : tokens) {
+                    Integer count = tokenCount.get(item);
+                    if (count == null)
+                        count = 0; // first time this token was found
+
+                    tokenCount.put(item, count+1);
+                }
+            }
+
+            for (Map.Entry entry : tokenCount.entrySet())
+            {
+                Log.d(TAG, "onActivityResult: "+ "key: " + entry.getKey() + "; value: " + entry.getValue());
+            }
 
             /*while(true){
                 Tokens tokens = lexer.yylex();
