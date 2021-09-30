@@ -8,24 +8,11 @@
 
 
     <Button
-        android:id="@+id/btn_about"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="100dp"
-        android:onClick="goToAbout"
-        android:rotationY="-15"
-        android:text="Acerca de"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
         android:id="@+id/btn_analize"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="100dp"
-        android:background="#009688"
         android:onClick="goToMetrics"
         android:rotationY="15"
         android:text="Analizar Programa"
@@ -44,15 +31,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_help"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginBottom="100dp"
-        android:onClick="goToHelp"
-        android:rotationY="15"
-        android:text="Ayuda"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

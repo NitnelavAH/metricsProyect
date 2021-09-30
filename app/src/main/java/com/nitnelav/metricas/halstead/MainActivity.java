@@ -25,14 +25,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(dbMetrics);
     }
 
-    public void goToHelp(View v){
-        Intent help = new Intent(this, Help_Activity.class);
-        startActivity(help);
-    }
-
-    public void goToAbout(View v){
-        Intent about = new Intent(this, About_Activity.class);
-        startActivity(about);
-    }
 }
 

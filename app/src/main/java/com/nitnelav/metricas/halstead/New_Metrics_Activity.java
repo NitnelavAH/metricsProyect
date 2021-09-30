@@ -90,7 +90,6 @@ public class New_Metrics_Activity extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 if(line.length()>0 && !line.startsWith("#")){
                     stringBuilder.append(line + "\n");
-                    Log.d(TAG, "onActivityResult: "+ line);
                 }
 
             }
@@ -112,23 +111,28 @@ public class New_Metrics_Activity extends AppCompatActivity {
             while ((token = lexer.yylex()) != null) {
                 Log.d(TAG, "onActivityResult: " + lexer.yylex());
                 Log.d(TAG, "onActivityResult: " + lexer.yytext());
+                Log.d(TAG, "onActivityResult: " + lexer.getReviewString());
                 myTokens.add(lexer.yytext());
-                switch (token){
+                switch (lexer.yylex()){
                     case KEYWORD:
                     case OPERATOR:
-                        operadores +=1;
-                        resultado += lexer.yytext() + " --> Operador \n";
+
+                            operadores += 1;
+                            resultado += lexer.yytext() + " --> Operador \n";
                         break;
                     case LITERAL:
                     case IDENTIFIER:
+
                         operandos +=1;
                         resultado += lexer.yytext() + " --> Operando \n";
+
                         break;
+
                     default:
                 }
             }
             String result = lexer.getReviewString();
-            //resultado += result;
+            resultado += result;
             resultado += "\nNo. Operadores: "+ operadores+"\nNo.Operandos: "+operandos;
             lexer.printReview();
 
