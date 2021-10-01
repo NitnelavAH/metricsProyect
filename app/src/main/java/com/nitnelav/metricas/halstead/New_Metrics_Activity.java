@@ -153,7 +153,41 @@ public class New_Metrics_Activity extends AppCompatActivity {
 
             resultado += "MÉTRICAS BÁSICAS \n\t Total Operadores N1: " + operadores + "\n\t" + "Operadores n1: " +
                     n1Operadores.size() + "\n\t" + "Total Operandos N2: " +
-                    operandos + "\n\t" + "Operandos n1: " + n2Operandos.size() + "\n";
+                    operandos + "\n\t" + "Operandos n2: " + n2Operandos.size() + "\n\n";
+
+            //MÉTRICAS DERIVADAS
+            resultado += "MÉTRICAS DERIVADAS \n\t";
+            // LONGITUD DEL PROGRAMA (P):
+            int N = operadores + operandos;
+            resultado += "LONGITUD DEL PROGRAMA (P): "+ N +" \n\t";
+
+            //VOCABULARIO DEL PROGRAMA:
+            int n = n1Operadores.size() + n2Operandos.size();
+            resultado += "VOCABULARIO DEL PROGRAMA: "+ n +" \n\t";
+
+            // VOLUMEN DEL PROGRAMA:
+            Double V = N * (Math.log(n)/Math.log(2));
+            resultado += "VOLUMEN DEL PROGRAMA: "+ V +" \n\t";
+
+            //DIFICULTAD DEL PROGRAMA:
+            Double D = (Double.valueOf(n1Operadores.size())/2)*(Double.valueOf(operandos)/Double.valueOf(operandos));
+            resultado += "DIFICULTAD DEL PROGRAMA: "+ D +" \n\t";
+
+            //NIVEL DEL PROGRAMA:
+            Double L = 1/D;
+            resultado += "NIVEL DEL PROGRAMA: "+ L +" \n\t";
+
+            //ESFUERZO DE IMPLEMENTACIÓN:
+            Double E = D*V;
+            resultado += "ESFUERZO DE IMPLEMENTACIÓN: "+ E +" \n\t";
+
+            //TIEMPO DE IMPLEMENTACIÓN:
+            Double T = E/18;
+            resultado += "TIEMPO DE IMPLEMENTACIÓN: "+ T +" \n\t";
+
+            //NÚMERO DE BUGS LIBERADOS:
+            Double B = Math.pow(T,2/3)/3000;
+            resultado += "NÚMERO DE BUGS LIBERADOS: "+ B +" \n";
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
