@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Objects;
 
@@ -67,10 +68,7 @@ public class New_Metrics_Activity extends AppCompatActivity {
                 try {
                     String code = readTextFromUri(resultData.getData());
                     String resuslt = getTokens(resultData.getData());
-                    Log.d(TAG, "onActivityResult: "+ code);
                     code_view.setText(code + "\n" + resuslt);
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -101,83 +99,62 @@ public class New_Metrics_Activity extends AppCompatActivity {
         int operadores = 0;
         int operandos = 0;
         int errors = 0;
-        String resultado = "\n ----RESULTADOS---- \n";
+        String resultado = "\nRESULTADOS\n";
         try (InputStream inputStream = getContentResolver().openInputStream(uri);
              BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))
         ) {
             LexerAnalizer lexer = new LexerAnalizer(reader, true);
             PyTokens token;
-            ArrayList<String> myTokens = new ArrayList<String>();
+
             while ((token = lexer.yylex()) != null) {
-                Log.d(TAG, "onActivityResult: " + lexer.yylex());
-                Log.d(TAG, "onActivityResult: " + lexer.yytext());
-                Log.d(TAG, "onActivityResult: " + lexer.getReviewString());
-                myTokens.add(lexer.yytext());
-                switch (lexer.yylex()){
-                    case KEYWORD:
-                    case OPERATOR:
+            }
 
+            ArrayList<Token> myTokens = lexer.getTokens();
+            ArrayList<String> myOperadores = new ArrayList<>();
+            ArrayList<String> myOperandos = new ArrayList<>();
+            for (Token myToken : myTokens) {
+                Log.d(TAG, "onActivityResult: "+ "\n " + myToken);
+                switch (myToken.getType()){
+                    case "KEYWORD":
+                    case "OPERATOR":
+                        if(!myToken.getValue().contains(")")){
                             operadores += 1;
-                            resultado += lexer.yytext() + " --> Operador \n";
+                            myOperadores.add(myToken.getValue());
+                            Log.d(TAG, "onActivityResult: "+ "\noperadores: " + myToken.getValue());
+                        }
                         break;
-                    case LITERAL:
-                    case IDENTIFIER:
-
+                    case "LITERAL":
+                    case "IDENTIFIER":
                         operandos +=1;
-                        resultado += lexer.yytext() + " --> Operando \n";
-
+                        myOperandos.add(myToken.getValue());
+                        Log.d(TAG, "onActivityResult: "+ "\noperandos: " + myToken.getValue());
                         break;
-
                     default:
                 }
             }
-            String result = lexer.getReviewString();
-            resultado += result;
-            resultado += "\nNo. Operadores: "+ operadores+"\nNo.Operandos: "+operandos;
-            lexer.printReview();
+            Log.d(TAG, "onActivityResult: "+ "\n-------------------");
+            ArrayList<String> n1Operadores = new ArrayList<>();
+            ArrayList<String> n2Operandos = new ArrayList<>();
 
+            for (String myToken : myOperadores) {
+                if(!n1Operadores.contains(myToken) || n1Operadores.size() < 1){
+                    n1Operadores.add(myToken);
+                    Log.d(TAG, "onActivityResult: "+ "\noperadores: " + myToken);
+                }
 
-            Map<String, Integer> tokenCount = new HashMap<>();
-
-            for (String myToken : myTokens) {
-
-                    Integer count = tokenCount.get(myToken);
-                    if (count == null)
-                        count = 0; // first time this token was found
-
-                    tokenCount.put(myToken, count+1);
+            }
+            for (String myToken : myOperandos) {
+                if (!n2Operandos.contains(myToken) || n2Operandos.size() < 1){
+                    n2Operandos.add(myToken);
+                    Log.d(TAG, "onActivityResult: "+ "\noperandos: " + myToken);
+                }
 
             }
 
-            for (Map.Entry entry : tokenCount.entrySet())
-            {
-                Log.d(TAG, "onActivityResult: "+ "key: " + entry.getKey() + "; value: " + entry.getValue());
-            }
+            resultado += "MÉTRICAS BÁSICAS \n\t Total Operadores N1: " + operadores + "\n\t" + "Operadores n1: " +
+                    n1Operadores.size() + "\n\t" + "Total Operandos N2: " +
+                    operandos + "\n\t" + "Operandos n1: " + n2Operandos.size() + "\n";
 
-            /*while(true){
-                Tokens tokens = lexer.yylex();
-                Log.d(TAG, "onActivityResult: " + lexer.lexeme);
-                if (tokens == null) {
-                    resultado += "No. Operadores: " + operadores + "\n" + "No. Operandos: " + operandos + "\n" + "No. Errores: " + errors + "\n";
-                    break;
-                }
-                switch (tokens) {
-                    case Operador:
-                        operadores += 1;
-                        resultado += lexer.lexeme + ":Es un " + tokens + "\n";
-                        break;
-                    case Operando:
-                        operandos += 1;
-                        resultado += lexer.lexeme + ":Es un " + tokens + "\n";
-                        break;
-                    case ERROR:
-                        errors += 1;
-                        resultado += lexer.lexeme + ":Es un " + tokens + "\n";
-                    default:
-                        resultado += "Token: " + tokens + '\n';
-                        break;
-                }
-            }*/
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

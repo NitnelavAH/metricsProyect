@@ -529,6 +529,10 @@ public class LexerAnalizer {
     return result;
   }
 
+  public ArrayList<Token> getTokens() {
+    return tokens;
+  }
+
   public void printReview() {
     for (Token token : this.tokens)
       System.out.print(token);
