@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void goToDb(View v){
-        Intent dbMetrics = new Intent(this, Metrics_Activity.class);
+        Intent dbMetrics = new Intent(this, ActivityDatabase.class);
         startActivity(dbMetrics);
     }
 

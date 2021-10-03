@@ -3,7 +3,9 @@ package com.nitnelav.metricas.halstead;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -31,6 +35,7 @@ public class New_Metrics_Activity extends AppCompatActivity {
     private Button chooseFile_btn;
     private TextView path_file;
     private EditText code_view;
+    private String namaFile= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,8 @@ public class New_Metrics_Activity extends AppCompatActivity {
     }
 
     private String readTextFromUri(Uri uri) throws IOException {
+        String name[] = uri.getLastPathSegment().split("/");
+        this.namaFile = name[name.length-1];
 
         StringBuilder stringBuilder = new StringBuilder();
         try (InputStream inputStream = getContentResolver().openInputStream(uri);
@@ -188,6 +195,31 @@ public class New_Metrics_Activity extends AppCompatActivity {
             //NÚMERO DE BUGS LIBERADOS:
             Double B = Math.pow(T,2/3)/3000;
             resultado += "NÚMERO DE BUGS LIBERADOS: "+ B +" \n";
+
+            DBQuery admin = new DBQuery(getApplicationContext(),"administracion",null,1);
+            SQLiteDatabase base = admin.getWritableDatabase();
+
+            ContentValues registro = new ContentValues();
+            String name = this.namaFile;
+            Date current = new Date();
+            registro.put("nombre",name + "-" + current.toString());
+            registro.put("n1",n1Operadores.size());
+            registro.put("N_1",operadores);
+            registro.put("n2",n2Operandos.size());
+            registro.put("N_2", operandos);
+            registro.put("N",N);
+            registro.put("n_",n);
+            registro.put("V",V);
+            registro.put("D",D);
+            registro.put("L",L);
+            registro.put("E",E);
+            registro.put("T",T);
+            registro.put("B",B);
+            base.insert("Metricas",null,registro);
+            base.close();
+
+            Toast.makeText(getApplicationContext(),name + "-" + current.toString()+ "Guardado",Toast.LENGTH_SHORT).show();
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

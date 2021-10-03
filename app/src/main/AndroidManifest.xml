@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MÉTRICASDEHALSTEAD">
+        <activity android:name=".ActivityDatabase"></activity>
         <activity android:name=".Metrics_Activity" />
         <activity android:name=".New_Metrics_Activity" />
         <activity android:name=".MainActivity">
